@@ -51,8 +51,7 @@ services:
 #        volumes:
 #            - logs/redis:/bitnami/redis
         ports:
-            - '6379:6379'
-            - '5672:5672'
+            - '6379:6379'         
         networks:
             - unicorn
             
