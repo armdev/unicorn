@@ -27,10 +27,19 @@ server:
     
 spring:
   main:
-    allow-bean-definition-overriding: true
-    
+    allow-bean-definition-overriding: true    
   application:
-    name: cache
+    name: cache    
+  redis:
+    host: redis
+    port: 6379
+    time-to-live: 3600
+  rabbitmq:
+    host: rabbitmq
+    #username: admin
+   # password: pwd
+    port: 5672
+    connection-timeout: 1m
     
   profiles:
     active:
