@@ -20,7 +20,7 @@ public class SwaggerConfig {
     private ApiInfo apiInfo() {
         return new ApiInfoBuilder()
                 .title("Location Application")
-                .description("Quasar application")
+                .description("Location application")
                 .termsOfServiceUrl("http://www-03.ibm.com/software/sla/sladb.nsf/sla/bm?Open")
                 .contact("Armen Arzumanyan")
                 .license("Apache License Version 2.0")
@@ -32,7 +32,7 @@ public class SwaggerConfig {
     @Bean
     public Docket personApi() {
         return new Docket(DocumentationType.SWAGGER_2).enable(true)
-                .groupName("Location API")
+                .groupName("LocationAPI")
                 .apiInfo(apiInfo())
                 .select()
                 .paths(regex("/api.*"))
