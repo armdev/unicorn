@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
  * @author armena
  */
 @RestController
-@RequestMapping("/api/v2/env")
+@RequestMapping("/api/v2/data")
 @Slf4j
 public class InfoController {
 
