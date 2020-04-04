@@ -25,7 +25,7 @@ stages:
         mavenPomFile: 'pom.xml'
         goals: 'package' # Optional
     
-    - task: eureka
+    - task: eureka@1
       displayName: Build an eureka
       inputs:
         command: build
@@ -33,7 +33,7 @@ stages:
         tags: |
           $(tag)
           
-    - task: location
+    - task: location@1
       displayName: Build an location
       inputs:
         command: build
@@ -42,7 +42,7 @@ stages:
           $(tag)
           
           
-    - task: weather
+    - task: weather@1
       displayName: Build an weather
       inputs:
         command: build
@@ -51,7 +51,7 @@ stages:
           $(tag)
           
    
-    - task: cache
+    - task: cache@1
       displayName: Build an Cache
       inputs:
         command: build
@@ -60,7 +60,7 @@ stages:
           $(tag)
           
           
-    - task: zuul
+    - task: zuul@1
       displayName: Build an zuul
       inputs:
         command: build
@@ -68,7 +68,7 @@ stages:
         tags: |
           $(tag)
           
-    - task: web
+    - task: web@1
       displayName: Build an web
       inputs:
         command: build
