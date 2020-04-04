@@ -1,0 +1,130 @@
+server:
+   http2:
+     enabled: true
+   port: 8079
+   connection-timeout: 900s
+   servlet:
+     session:
+       timeout: 900s
+   undertow:
+       buffer-size: 8192
+       io-threads: 1200
+       worker-threads: 100
+       no-request-timeout: 1800s
+   compression:
+      enabled: true
+      mime-types: text/html,text/xml,text/plain,text/css,text/javascript,application/javascript,application/json
+      min-response-size: 512   
+
+zuul:
+  forceOriginalQueryStringEncoding: true
+  prefix: /web/gateway  
+  host:
+    connect-timeout-milliss: 500000
+    connection-request-timeout-millis: 500000
+    max-total-connections: 100000
+    socket-timeout-millis: 100000
+    time-to-live: 100000
+  routes:   
+#    auth:
+#      path: /auth/**     
+#      url: http://auth:5001 ## without eureka
+     location:
+      path: /location/**
+      serviceId: location
+      
+     weather:
+      path: /weather/**
+      serviceId: weather
+    
+      
+  ratelimit:
+    enabled: true
+    repository: REDIS
+    policy-list:
+      location:
+        - limit: 500
+          refresh-interval: 120
+          type:
+            - url            
+      weather:
+        - limit: 500
+          refresh-interval: 120
+          type:
+            - url  
+
+    
+   
+management:
+  security:  
+    enabled: false    
+
+spring:
+  application:
+    name: zuul    
+  redis:
+    host: redis
+    port: 6379
+    time-to-live: 3600
+  rabbitmq:
+    host: rabbitmq
+    #username: admin
+   # password: pwd
+    port: 5672
+    connection-timeout: 1m
+    
+  servlet:
+   multipart:
+      max-file-size: 5MB
+      max-request-size: 5MB
+    
+  profiles:
+    active:
+      dev
+      
+  cloud:     
+    discovery:
+       service-id: zuul
+       enabled: true
+
+  zipkin:
+    baseUrl: http://zipkin:9411
+    enabled: true
+  sleuth:
+    enabled: true
+    http:
+      enabled: true   
+    sampler:
+    percentage: 1 
+
+    
+ribbon:
+  eureka:
+     enabled: true
+     
+location:
+    ribbon:
+     retryableStatusCodes: 502,503,504,505
+weather:
+    ribbon:
+     retryableStatusCodes: 502,503,504,505
+
+
+logging:
+    level:
+      root: ${LOG_LEVEL:WARN}
+      com.optym.marketplace: ${LOG_LEVEL:WARN}
+      
+eureka:
+  instance:  
+    leaseRenewalIntervalInSeconds: 10
+    prefer-ip-address: true
+    leaseExpirationDurationInSeconds: 3
+  client:
+    enabled: true
+    registryFetchIntervalSeconds: 5   
+    healthcheck:
+      enabled: true
+    serviceUrl:
+      defaultZone: http://eureka:8761/eureka
+

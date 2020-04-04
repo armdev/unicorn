@@ -1,0 +1,153 @@
+version: '3.3'
+services:
+    
+    eureka:
+        image: eureka
+        build: ./eureka       
+        container_name: eureka
+        deploy:
+            replicas: 1     
+        ports:
+            - '8761:8761'
+        networks:
+            - unicorn
+            
+    zipkin:
+        image: openzipkin/zipkin            
+        container_name: zipkin
+        deploy:
+            replicas: 1     
+        ports:
+            - '9411:9411'
+        networks:
+            - unicorn
+            
+            
+    rabbitmq:
+        image: rabbitmq            
+        container_name: rabbitmq
+        deploy:
+            replicas: 1
+        links: zipkin
+        volumes:
+            - logs/rabbitmq:/opt/rabbitmq/logs
+        ports:
+            - '15672:15672'
+            - '5672:5672'
+        networks:
+            - unicorn
+            
+    redis:
+        image: 'bitnami/redis:latest'            
+        container_name: redis
+        deploy:
+            replicas: 1
+        environment:
+           - ALLOW_EMPTY_PASSWORD=yes
+           - REDIS_DISABLE_COMMANDS=FLUSHDB,FLUSHALL
+        labels:
+           kompose.service.type: nodeport
+        volumes:
+            - logs/redis:/bitnami/redis
+        ports:
+            - '6379:6379'
+            - '5672:5672'
+        networks:
+            - unicorn
+            
+            
+    weather:
+        image: weather 
+        build: ./weather 
+        container_name: weather
+        deploy:
+            replicas: 1
+        depends_on:
+            - eureka
+        links:
+            - eureka
+            - redis
+            - zipkin
+            - rabbitmq
+            
+        ports:
+            - '2030:2030'       
+        networks:
+            - unicorn
+            
+            
+    location:
+        image: location 
+        build: ./location 
+        container_name: location
+        deploy:
+            replicas: 1
+        depends_on:
+            - eureka
+        links:
+            - eureka
+            - redis
+            - zipkin
+            - rabbitmq
+            
+        ports:
+            - '2031:2031'       
+        networks:
+            - unicorn
+            
+            
+            
+    cache:
+        image: cache 
+        build: ./cache 
+        container_name: cache
+        deploy:
+            replicas: 1
+        depends_on:
+            - eureka
+        links:
+            - eureka
+            - redis
+            - zipkin
+            - rabbitmq            
+        ports:
+            - '2032:2032'       
+        networks:
+            - unicorn
+            
+            
+            
+    zuul:
+        image: zuul 
+        build: ./zuul 
+        container_name: zuul
+        deploy:
+            replicas: 1
+        depends_on:
+            - eureka
+        links:
+            - eureka
+            - redis
+            - zipkin
+            - rabbitmq            
+        ports:
+            - '8079:8079'       
+        networks:
+            - unicorn
+            
+            
+    web:
+        image: web 
+        build: ./web 
+        container_name: web
+        deploy:
+            replicas: 1             
+        ports:
+            - '9595:8080'       
+        networks:
+            - unicorn           
+
+            
+networks:
+    unicorn:
+        driver: bridge
