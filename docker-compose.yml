@@ -28,9 +28,10 @@ services:
         container_name: rabbitmq
         deploy:
             replicas: 1
-        links: zipkin
-        volumes:
-            - logs/rabbitmq:/opt/rabbitmq/logs
+        links: 
+            - zipkin
+#        volumes:
+#            - logs/rabbitmq:/opt/rabbitmq/logs
         ports:
             - '15672:15672'
             - '5672:5672'
@@ -47,8 +48,8 @@ services:
            - REDIS_DISABLE_COMMANDS=FLUSHDB,FLUSHALL
         labels:
            kompose.service.type: nodeport
-        volumes:
-            - logs/redis:/bitnami/redis
+#        volumes:
+#            - logs/redis:/bitnami/redis
         ports:
             - '6379:6379'
             - '5672:5672'
