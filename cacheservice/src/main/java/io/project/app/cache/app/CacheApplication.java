@@ -45,6 +45,7 @@ public class CacheApplication {
                 = new JedisConnectionFactory();
         jedisConFactory.setHostName("redis");
         jedisConFactory.setPort(6379);
+       
       //  jedisConFactory.setPassword("jroot");
         return jedisConFactory;
     }
