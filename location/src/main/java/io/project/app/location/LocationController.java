@@ -57,8 +57,13 @@ public class LocationController {
         log.info("Get city with id " + key);
 
         Optional<String> cityByKey = cacheHttpClient.getCityByKey(key);
-        log.info("Result from cache service: " + cityByKey.get());
+        if (cityByKey.isPresent()) {
+            log.info("Result from cache service: " + cityByKey.get());
+            return (key + " key and city returned " + cityByKey.get());
+        }
+        
+        
+        return "Did not received any data from cache";
 
-        return (key + " key and city returned " + cityByKey.get());
     }
 }

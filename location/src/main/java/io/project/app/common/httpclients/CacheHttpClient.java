@@ -50,11 +50,16 @@ public class CacheHttpClient {
         log.debug("URL  " + url);
         Try<String> result = Try.of(() -> this.restTemplate.getForObject(url, String.class));
 
-        if (!result.isSuccess()) {
+        if (!result.isSuccess() || result.isEmpty() || result.isFailure()) {
             log.error("Could not get a data: ", result.getCause());
             return Optional.empty();
         }
-        return Optional.ofNullable(result.get());
+
+        if (result.isSuccess()) {
+
+            return Optional.ofNullable(result.get());
+        }
+        return Optional.empty();
     }
 
     public String putDataIntoCache(SaveCityRequest saveCityRequest) {
