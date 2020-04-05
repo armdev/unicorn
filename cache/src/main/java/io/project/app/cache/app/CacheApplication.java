@@ -1,4 +1,4 @@
-package io.project.app.cache;
+package io.project.app.cache.app;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.Banner;

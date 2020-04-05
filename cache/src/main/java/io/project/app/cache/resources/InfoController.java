@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package io.project.app.cache;
+package io.project.app.cache.resources;
 
 import io.project.app.common.services.RandomUUID;
 import java.net.InetAddress;

@@ -1,4 +1,4 @@
-package io.project.app.cache;
+package io.project.app.cache.app;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
