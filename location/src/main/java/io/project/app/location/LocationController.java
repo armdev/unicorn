@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package io.project.app.cache;
+package io.project.app.location;
 
 import io.project.app.common.services.RandomUUID;
 import java.net.InetAddress;
@@ -23,7 +23,7 @@ import reactor.core.publisher.Mono;
 @RestController
 @RequestMapping("/api/v2/data")
 @Slf4j
-public class InfoController {
+public class LocationController {
 
     @Autowired
     private RandomUUID randomUUID;
@@ -40,7 +40,7 @@ public class InfoController {
         return hostName;
     }
 
-    @GetMapping("/random/cache")
+    @GetMapping("/random/location")
     public Mono<String> fetch() {
         return Mono.just(randomUUID.randomIdProvider());
     }

@@ -6,8 +6,8 @@
     <version>1.0</version>
     <packaging>pom</packaging>
     <modules>        
-        <module>eureka</module>
         <module>common</module>
+        <module>eureka</module>       
         <module>location</module>
         <module>weather</module>         
         <module>cache</module> 
