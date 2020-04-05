@@ -6,6 +6,7 @@
 package io.project.app.repositories;
 
 import io.project.app.domain.BrainData;
+import java.util.Optional;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Repository;
@@ -19,5 +20,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Component
 @Transactional
 public interface BrainRepository extends CrudRepository<BrainData, String>{
+    
+    Optional<BrainData> findByValue(String value);
     
 }

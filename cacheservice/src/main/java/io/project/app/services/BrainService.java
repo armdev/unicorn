@@ -33,6 +33,16 @@ public class BrainService {
 
     }
 
+    public Optional<BrainData> findByValue(String value) {
+        return searchRepository.findByValue(value);
+
+    }
+
+    public void delete(BrainData value) {
+        searchRepository.delete(value);
+
+    }
+
     public BrainData search(String id) {
         log.info("Search by id " + id);
         BrainData get = redisTemplate.opsForValue().get(id);

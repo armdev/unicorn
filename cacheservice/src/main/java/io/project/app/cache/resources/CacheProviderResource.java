@@ -26,50 +26,54 @@ import org.springframework.web.bind.annotation.RestController;
 @Slf4j
 @RequestMapping("/api/v2/caches")
 public class CacheProviderResource {
-
+    
     @Autowired
     private BrainService brainService;
-
+    
     @GetMapping(path = "/location", produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
     @CrossOrigin
     public ResponseEntity<?> get(
             @Valid @RequestParam(name = "key", required = true) final String key
     ) {
-
+        
         Optional<BrainData> data = brainService.find(key);
-
+        
         if (data.isPresent()) {
-
+            
             return ResponseEntity.status(HttpStatus.OK).body(data.get().getValue());
         }
-
+        
         if (!data.isPresent()) {
-
+            
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Did not found data");
         }
-
+        
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Hey, bad request");
-
+        
     }
-
+    
     @PutMapping(path = "/location", produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
     @CrossOrigin
     public ResponseEntity<?> put(@RequestBody SaveCityRequest saveCityRequest
     ) {
-
+        
         BrainData data = new BrainData();
         data.setKey(saveCityRequest.getKey());
         data.setValue(saveCityRequest.getCity());
+        Optional<BrainData> findByValue = brainService.findByValue(saveCityRequest.getCity());
+        if (findByValue.isPresent()) {
+            brainService.delete(findByValue.get());
+        }
         BrainData savedData = brainService.save(data);
         
         if (savedData.getId() != null) {
             return ResponseEntity.status(HttpStatus.OK).body(savedData.getId());
         }
-
+        
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Could not save:Bad Request");
-
+        
     }
-
+    
 }

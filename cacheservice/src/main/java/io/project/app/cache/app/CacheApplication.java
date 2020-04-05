@@ -8,6 +8,7 @@ import org.springframework.boot.WebApplicationType;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
+import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 import org.springframework.cloud.netflix.eureka.EnableEurekaClient;
 import org.springframework.context.annotation.Bean;
@@ -25,6 +26,7 @@ import org.springframework.web.client.RestTemplate;
 @ComponentScan("io.project")
 @EnableRedisRepositories("io.project.app.repositories")
 @EntityScan("io.project.app.domain")
+@EnableCaching
 public class CacheApplication {
 
     public static void main(String[] args) {
@@ -45,8 +47,8 @@ public class CacheApplication {
                 = new JedisConnectionFactory();
         jedisConFactory.setHostName("redis");
         jedisConFactory.setPort(6379);
-       
-      //  jedisConFactory.setPassword("jroot");
+
+        //  jedisConFactory.setPassword("jroot");
         return jedisConFactory;
     }
 
@@ -54,6 +56,7 @@ public class CacheApplication {
     public RedisTemplate<String, BrainData> redisTemplate() {
         RedisTemplate<String, BrainData> template = new RedisTemplate<>();
         template.setConnectionFactory(jedisConnectionFactory());
+
         return template;
     }
 
@@ -62,4 +65,5 @@ public class CacheApplication {
 
     }
 
+    // https://stackoverflow.com/questions/34893279/spring-data-redis-expire-key
 }

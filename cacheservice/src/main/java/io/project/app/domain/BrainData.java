@@ -17,7 +17,7 @@ import org.springframework.data.redis.core.RedisHash;
  *
  * @author armena
  */
-@RedisHash("brain")
+@RedisHash(value="brain", timeToLive = 30)
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
