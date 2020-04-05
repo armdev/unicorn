@@ -1,7 +1,9 @@
 package io.project.app.cache.resources;
 
-import io.project.app.cache.services.CacheProviderService;
 import io.project.app.common.requests.SaveCityRequest;
+import io.project.app.domain.BrainData;
+import io.project.app.services.BrainService;
+import java.util.Optional;
 import javax.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 
@@ -26,7 +28,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class CacheProviderResource {
 
     @Autowired
-    private CacheProviderService cacheProviderService;
+    private BrainService brainService;
 
     @GetMapping(path = "/location", produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
@@ -35,19 +37,19 @@ public class CacheProviderResource {
             @Valid @RequestParam(name = "key", required = true) final String key
     ) {
 
-        long startTime = System.currentTimeMillis();
-        log.info("------  start: request/response time in milliseconds: " + startTime + " ----");
-        boolean exists = cacheProviderService.exists(key);
-        if (!exists) {
+        Optional<BrainData> data = brainService.find(key);
+
+        if (data.isPresent()) {
+
+            return ResponseEntity.status(HttpStatus.OK).body(data.get().getValue());
+        }
+
+        if (!data.isPresent()) {
+
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Did not found data");
         }
-        String valueOfKey = cacheProviderService.get(key, String.class);
-        long elapsedTime = System.currentTimeMillis() - startTime;
-        log.info("------  end: request/response time in milliseconds: " + elapsedTime + " ----");
 
-        log.info("valueOfKey " + valueOfKey + " ----");
-
-        return ResponseEntity.status(HttpStatus.OK).body(valueOfKey);
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Hey, bad request");
 
     }
 
@@ -57,36 +59,16 @@ public class CacheProviderResource {
     public ResponseEntity<?> put(@RequestBody SaveCityRequest saveCityRequest
     ) {
 
-        boolean exists = cacheProviderService.exists(saveCityRequest.getKey());
-        if (exists) {
-
-            cacheProviderService.delete(saveCityRequest.getKey());
-
-            boolean set = cacheProviderService.set(saveCityRequest.getKey(), saveCityRequest.getCity(), saveCityRequest.getExpireSeconds());
-
-            if (set) {
-                return ResponseEntity.status(HttpStatus.OK).body("Data cached, old is deleted");
-            }
-
-            if (!set) {
-                return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED).body("Could not set cache, try again");
-            }
+        BrainData data = new BrainData();
+        data.setKey(saveCityRequest.getKey());
+        data.setValue(saveCityRequest.getCity());
+        BrainData savedData = brainService.save(data);
+        
+        if (savedData.getId() != null) {
+            return ResponseEntity.status(HttpStatus.OK).body(savedData.getId());
         }
 
-        if (!exists) {
-
-            boolean set = cacheProviderService.set(saveCityRequest.getKey(), saveCityRequest.getCity(), saveCityRequest.getExpireSeconds());
-
-            if (set) {
-                return ResponseEntity.status(HttpStatus.OK).body("Data is cached");
-            }
-
-            if (!set) {
-                return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED).body("Could not set cache");
-            }
-        }
-
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Bad Request");
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Could not save:Bad Request");
 
     }
 

@@ -86,6 +86,13 @@ public class CacheHttpClient {
                 return result.get().getBody();
             }
 
+            if (statusCodeValue == HttpStatus.NOT_FOUND.value()) {
+
+                log.error("Not Found Request");
+
+                return result.get().getBody();
+            }
+
             return "Request To Cache service failed";
         }
 
@@ -93,8 +100,9 @@ public class CacheHttpClient {
     }
 
     private String serviceUrl() {
-        
-        InstanceInfo instance = discoveryClient.getNextServerFromEureka("cacheservice", true);
+
+        InstanceInfo instance = discoveryClient.getNextServerFromEureka("CACHESERVICE", false);
+        log.info("@@@@@instance.getHomePageUrl(); " + instance.getHomePageUrl());
 
         return instance.getHomePageUrl();
     }

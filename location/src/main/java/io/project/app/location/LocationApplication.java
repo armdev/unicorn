@@ -21,7 +21,7 @@ public class LocationApplication {
     public static void main(String[] args) {
         final SpringApplication application = new SpringApplication(LocationApplication.class);
         application.setBannerMode(Banner.Mode.CONSOLE);
-        application.setWebApplicationType(WebApplicationType.REACTIVE);
+        application.setWebApplicationType(WebApplicationType.SERVLET);
         application.run(args);
     }
 

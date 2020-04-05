@@ -12,11 +12,11 @@ import java.util.Optional;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.openfeign.EnableFeignClients;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import reactor.core.publisher.Mono;
 
 /**
  *
@@ -35,7 +35,8 @@ public class LocationController {
     private CacheHttpClient cacheHttpClient;
 
     @GetMapping("/random/location")
-    public Mono<String> put(@RequestParam String city) {
+    @CrossOrigin
+    public String put(@RequestParam String city) {
         String randomIdProvider = randomUUID.randomIdProvider();
 
         log.info("Send city with id " + randomIdProvider);
@@ -46,18 +47,18 @@ public class LocationController {
         String putDataIntoCache = cacheHttpClient.putDataIntoCache(saveCityRequest);
         log.info("Result from cache service: " + putDataIntoCache);
 
-        return Mono.just(putDataIntoCache + " key is " + randomIdProvider);
+        return (putDataIntoCache + " key is " + randomIdProvider);
     }
 
     @GetMapping("/random/location/key")
-    public Mono<String> get(@RequestParam String key) {
-       
+    @CrossOrigin
+    public String get(@RequestParam String key) {
 
         log.info("Get city with id " + key);
-       
+
         Optional<String> cityByKey = cacheHttpClient.getCityByKey(key);
         log.info("Result from cache service: " + cityByKey.get());
 
-        return Mono.just(key + " key and city returned " + cityByKey.get());
+        return (key + " key and city returned " + cityByKey.get());
     }
 }
