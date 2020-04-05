@@ -9,10 +9,10 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>io.project.app.cache</groupId>
-    <artifactId>cache</artifactId>
+    <artifactId>cacheservice</artifactId>
     <version>1.0</version>
-    <name>cache</name>
-    <description>cache</description>
+    <name>cacheservice</name>
+    <description>cacheservice</description>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -147,7 +147,7 @@
     </dependencyManagement>
 
     <build>
-        <finalName>cache</finalName>
+        <finalName>cacheservice</finalName>
         <plugins>
             <plugin>
                 <groupId>org.springframework.boot</groupId>

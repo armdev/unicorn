@@ -1,8 +1,5 @@
 package io.project.app.common.api;
 
-import org.springframework.cloud.openfeign.FeignClient;
-
-@FeignClient(value = "cache")
 public interface CacheService {
 
     <T> T get(String key, Class<T> clazz);

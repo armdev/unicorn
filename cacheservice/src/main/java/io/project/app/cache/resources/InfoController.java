@@ -28,6 +28,11 @@ public class InfoController {
     @Autowired
     private RandomUUID randomUUID;
 
+    @GetMapping("/random/cache")
+    public Mono<String> fetch() {
+        return Mono.just(randomUUID.randomIdProvider());
+    }
+
     @GetMapping
     public String get() {
         String hostName = "";
@@ -40,8 +45,4 @@ public class InfoController {
         return hostName;
     }
 
-    @GetMapping("/random/cache")
-    public Mono<String> fetch() {
-        return Mono.just(randomUUID.randomIdProvider());
-    }
 }

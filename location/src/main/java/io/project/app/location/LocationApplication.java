@@ -1,6 +1,5 @@
 package io.project.app.location;
 
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.Banner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.WebApplicationType;
@@ -25,7 +24,7 @@ public class LocationApplication {
         application.setWebApplicationType(WebApplicationType.REACTIVE);
         application.run(args);
     }
-    
+
     @Bean
     public RestTemplate restTemplate() {
         return new RestTemplate();
@@ -33,7 +32,7 @@ public class LocationApplication {
 
     @EventListener(ApplicationReadyEvent.class)
     public void init() {
-        
+
     }
 
 }

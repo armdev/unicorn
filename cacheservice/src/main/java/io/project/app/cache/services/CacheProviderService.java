@@ -1,25 +1,17 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package io.project.app.cache.services;
 
 import io.project.app.common.api.CacheService;
 import io.project.app.common.services.JsonUtil;
 import lombok.extern.slf4j.Slf4j;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisPool;
 import redis.clients.jedis.params.SetParams;
 
-/**
- *
- * @author armena
- */
-@Service
 @Slf4j
+@Service
 public class CacheProviderService implements CacheService {
 
     @Autowired
@@ -35,6 +27,8 @@ public class CacheProviderService implements CacheService {
             String strValue = jedis.get(key);
 
             T objValue = JsonUtil.stringToBean(strValue, clazz);
+
+            log.info("get by key " + key);
             return objValue;
         } finally {
 
@@ -44,6 +38,9 @@ public class CacheProviderService implements CacheService {
 
     @Override
     public <T> boolean set(String key, T value) {
+
+        log.info("Set Key " + key);
+        log.info("Set Value " + key);
         Jedis jedis = null;
         try {
             jedis = jedisPool.getResource();
@@ -69,7 +66,7 @@ public class CacheProviderService implements CacheService {
             if (strValue == null || strValue.length() <= 0) {
                 return false;
             }
-           
+            //jedis.set(key, strValue, nxxx, expx, expireSeconds);
             SetParams setParams = new SetParams();
             setParams.ex(expireSeconds);
 

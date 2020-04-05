@@ -42,6 +42,15 @@ spring:
     discovery:
       service-id: weather
       enabled: true
+  zipkin:
+    baseUrl: http://zipkin:9411
+    enabled: true
+  sleuth:
+    enabled: true
+    http:
+      enabled: true   
+    sampler:
+    percentage: 1
 
 jackson:
     serialization:

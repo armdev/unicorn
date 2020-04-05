@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 docker rm -f $(docker ps -a -q)
-docker rmi -f cache
+docker rmi -f cacheservice
 docker rmi -f location
 docker rmi -f eureka
 docker rmi -f weather

@@ -97,10 +97,10 @@ services:
             
             
             
-    cache:
-        image: cache 
-        build: ./cache 
-        container_name: cache
+    cacheservice:
+        image: cacheservice 
+        build: ./cacheservice 
+        container_name: cacheservice
         deploy:
             replicas: 1
         depends_on:

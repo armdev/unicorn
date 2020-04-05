@@ -29,7 +29,7 @@ spring:
   main:
     allow-bean-definition-overriding: true    
   application:
-    name: cache    
+    name: cacheservice    
   redis:
     host: redis
     port: 6379
@@ -49,8 +49,18 @@ spring:
     inetutils:
       preferred-networks: 10.0
     discovery:
-      service-id: cache
+      service-id: cacheservice
       enabled: true
+      
+  zipkin:
+    baseUrl: http://zipkin:9411
+    enabled: true
+  sleuth:
+    enabled: true
+    http:
+      enabled: true   
+    sampler:
+    percentage: 1
 
 jackson:
     serialization:

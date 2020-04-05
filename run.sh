@@ -9,7 +9,7 @@ docker-compose down
 echo "Start Full System "
 docker-compose  up -d --build
 echo "Show backend logs"
-docker logs --follow web
+docker logs --follow location
 #mvn clean install -pl backend -am -DskipTests=true
 
 

@@ -10,7 +10,7 @@
         <module>eureka</module>       
         <module>location</module>
         <module>weather</module>         
-        <module>cache</module> 
+        <module>cacheservice</module> 
         <module>zuul</module> 
         <module>web</module>          
     </modules>
